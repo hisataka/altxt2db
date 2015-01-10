@@ -1,0 +1,8 @@
+DaoType=S2JDBC
+DefaultResourcePath=/altxt2db/src/main/resources
+DefaultRootPackage=jp.co.altxt2db
+DefaultSrcPath=/altxt2db/src/main/java
+ServletPath=altxt2db
+ViewType=None
+WebContentsRoot=src/main/webapp
+eclipse.preferences.version=1
