@@ -32,16 +32,10 @@ public abstract class AbstractAction {
 				return result;
 			}
 
-			// 共通フロー①
-			// 共通フロー②
-
 			result = execute();
 			if (!result) {
 				return result;
 			}
-
-			// 共通フロー③
-			// 共通フロー④
 
 			result = fini();
 		} catch (Exception e) {
