@@ -25,7 +25,7 @@
 			]
 		}
 	]
-	, "cols":  [
+	, "coldef":  [
 		{
 			"name": "LKB"
 			, "idx": "0"
