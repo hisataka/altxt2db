@@ -1,9 +1,11 @@
 package jp.co.altxt2db.action;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import jp.co.altxt2db.constants.SystemConstants;
 import jp.co.altxt2db.dto.AltxtMetaDto;
@@ -52,20 +54,50 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 		boolean result = true;
 
 		// ファイル処理
-	    FileReader fr = null;
-	    BufferedReader br = null;
+    	FileInputStream fis = null;
+    	InputStreamReader in = null;
+    	BufferedReader br = null;
 	    try {
-	        fr = new FileReader(dataPath);
-	        br = new BufferedReader(fr);
+	    	fis = new FileInputStream(dataPath);
+	    	in = new InputStreamReader(fis,"MS932");
+	    	br = new BufferedReader(in);
 
 	        String line;
 	        while ((line = br.readLine()) != null) {
-	        	String[] cols = CsvParser.split(line);
+	        	String[] vals = CsvParser.split(line);
+	        	altxt2DbLogic.setColValue(altxtMetaDto, vals);
+	        	String sql = altxt2DbLogic.makeUpdateSql(altxtMetaDto);
+	        	//altxt2DbService.execSql(sql);
 
-	        	for(String col: cols) {
-	        		System.out.print("「" + col + "」");
-	        	}
-	        	System.out.print("\r\n");
+	        	/*
+	        	 * アップデート用セット抽出クエリ
+	        	select
+
+	        case work.lkb when '@' then '' when '' then child.lkb else work.lkb end
+	        , case work.k_rid when '@' then '' when '' then child.k_rid else work.k_rid end
+	        , case work.k_kcd when '@' then '' when '' then child.k_kcd else work.k_kcd end
+	        , case work.k_bk when '@' then '' when '' then child.k_bk else work.k_bk end
+	        , case work.ymd when '@' then '' when '' then child.ymd else work.ymd end
+	        , case work.mkb when '@' then '' when '' then child.mkb else work.mkb end
+	        , case work.s_rid when '@' then '' when '' then child.s_rid else work.s_rid end
+	        , case work.s_kcd when '@' then '' when '' then child.s_kcd else work.s_kcd end
+	        , case work.s_bk when '@' then '' when '' then child.s_bk else work.s_bk end
+	        , case work.nd1 when '@' then '' when '' then child.nd1 else work.nd1 end
+	        , case work.nd2 when '@' then '' when '' then child.nd2 else work.nd2 end
+	        , case work.ad_cd when '@' then '' when '' then child.ad_cd else work.ad_cd end
+	        , case work.ad_nm when '@' then '' when '' then child.ad_nm else work.ad_nm end
+	    from _____ALTXT2DB_CHILD WORK inner join child
+	     on work.K_RID = child.k_rid and work.k_kcd = child.k_kcd and work.k_bk = child.k_bk and work.S_RID = child.s_rid and work.s_kcd = child.s_kcd and work.s_bk = child.s_bk;
+
+	    select * from child;
+	    select * from _____ALTXT2DB_CHILD ;
+*/
+
+	        	/* 子供削除
+	        	delete from child where
+	        	 exists ( select *  from _____ALTXT2DB_CHILD B where mkb = 'C'
+	        	        and B.K_RID = child.K_RID and B.K_KCD = child.K_KCD and B.K_BK = child.K_BK and B.S_RID = child.S_RID and B.S_KCD = child.S_KCD and B.S_BK = child.S_BK);
+*/
 	        }
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -76,7 +108,8 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	    } finally {
 	        try {
 	            br.close();
-	            fr.close();
+	            in.close();
+	            fis.close();
 	        } catch (IOException e) {
 	            e.printStackTrace();
 		        result = false;
@@ -85,32 +118,6 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	    if (!result) {
 	    	return result;
 	    }
-
-		// ②ファイルから一時テーブルへ更新内容を１行ずつマージし、レコードを集約
-		// ②－１集合項目ルールを通常項目ルールへ卸す
-		//  @,, → @,@,@
-		//  a,,c → a,@,c
-		//  ,, → ,,
-		//  a,b,c → a,b,c
-		//  要約すると、先頭に@があれば残りも@で補完
-		//  すべて空ならそのまま補完なし
-		//  ↑２つ以外の場合でいずれかの項目が空なら@で補完
-		// ②－２修正区分を判定し削除である場合は、子供テーブルの本テーブルのレコードを削除
-
-		// ③一時テーブルと本テーブルを結合しカラム更新ルールに従って更新セットを抽出
-		//  @は空として抽出、空値は本テーブルから値を抽出
-
-		// ④　③で生成した更新用データセットを本テーブルへマージ
-
-//		List<HOGE> l = altxt2DbService.selecthoge();
-
-	//	for (HOGE h: l) {
-	//		System.out.println("col:" + h.col);
-		//}
-
-		// メタ情報をどう扱うか・・・
-		// まずはjsonオブジェクトとして生成しなきゃ
-
 		return true;
 	}
 }

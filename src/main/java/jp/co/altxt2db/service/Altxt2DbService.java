@@ -19,6 +19,9 @@ public class Altxt2DbService extends AbstractGeneralService implements SystemCon
 
 		return workTable;
 	}
+	public void execSql(String sql) {
+		updateBySql(sql).execute();
+	}
 //	public List<HOGE> selecthoge() {
 //		return selectBySqlFile(HOGE.class, "hogeselect.sql").getResultList();
 //	}

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.extension.jdbc.SqlFileSelect;
 import org.seasar.extension.jdbc.SqlFileUpdate;
+import org.seasar.extension.jdbc.SqlUpdate;
 import org.seasar.extension.jdbc.parameter.Parameter;
 
 /**
@@ -98,5 +99,9 @@ public abstract class AbstractGeneralService {
      */
     protected SqlFileUpdate updateBySqlFile(String path, Object parameter) {
         return jdbcManager.updateBySqlFile(sqlFilePathPrefix + path, parameter);
+    }
+
+    protected SqlUpdate updateBySql(String sql) {
+    	return jdbcManager.updateBySql(sql);
     }
 }

@@ -4,6 +4,6 @@ import java.util.List;
 
 public class AltxtMetaDto {
 	public String table;
-	public List<AltxtMetaAggregateDto> aggregate;
+	public List<String> keys;
 	public List<AltxtMetaColdefDto> coldef;
 }

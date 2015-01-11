@@ -1,70 +1,45 @@
 {
 	"table": "parent"
-	, "aggregate": [
-		{
-			"name": "K"
-			, "cols": [
-				"K_RID"
-				, "K_KCD"
-				, "K_BK"
-			]
-		}
-		, {
-			"name": "AD"
-			, "cols": [
-				"AD_CD"
-				, "AD_NM"
-			]
-		}
+	, "keys": [
+		"K_RID"
+		, "K_KCD"
+		, "K_BK"
 	]
 	, "coldef":  [
 		{
 			"name": "LKB"
-			, "idx": "0"
 		}
 		, {
 			"name": "K_RID"
-			, "idx": "1"
-			, "key": "true"
-			, "aggregate": "K"
+			, "aggregate": "true"
 		}
 		, {
 			"name": "K_KCD"
-			, "idx": "2"
-			, "key": "true"
-			, "aggregate": "K"
+			, "aggregate": "true"
 		}
 		, {
 			"name": "K_BK"
-			, "idx": "3"
-			, "key": "true"
-			, "aggregate": "K"
+			, "aggregate": "true"
 		}
 		, {
 			"name": "YMD"
-			, "idx": "4"
 		}
 		, {
 			"name": "MKB"
-			, "idx": "5"
 		}
 		, {
 			"name": "ND1"
-			, "idx": "9"
 		}
 		, {
 			"name": "ND2"
-			, "idx": "10"
 		}
 		, {
 			"name": "AD_CD"
-			, "idx": "11"
-			, "aggregate": "AD"
+			, "aggregate": "true"
 		}
 		, {
 			"name": "AD_NM"
-			, "idx": "12"
-			, "aggregate": "AD"
+			, "aggregate": "true"
 		}
 	]
 	, "children": [
