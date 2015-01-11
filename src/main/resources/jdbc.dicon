@@ -20,15 +20,16 @@
 		<property name="password">""</property>
 	</component>
 	-->
-	
+
 	<!-- for H2 -->
+	<!-- 			"jdbc:h2:tcp://localhost:9092/demo" -->
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:h2:tcp://localhost:9092/demo"
+			"jdbc:h2:~/test"
 		</property>
 		<property name="user">"sa"</property>
 		<property name="password">""</property>
@@ -36,7 +37,7 @@
 			@org.seasar.framework.util.DriverManagerUtil@deregisterAllDrivers()
 		</destroyMethod>
 	</component>
-	
+
 	<!-- for Oracle -->
 	<!--
 	<component name="xaDataSource"
@@ -70,7 +71,7 @@
 		</initMethod>
 	</component>
 	-->
-	
+
 	<!-- for PostgreSQL -->
 	<!--
 	<component name="xaDataSource"
@@ -94,7 +95,7 @@
 		Javaのエンコーディング名]
 		例："jdbc:mysql://localhost:3306/test?useUnicode=true" +
 		"&amp;characterEncoding=Windows-31J"
-		
+
 	- MySQL5.0以降で，エンコーディングがeucjpmsの列を扱う場合には，
 		URL指定の後に，以下の接続パラメータを追加で指定してください．
 		characterEncoding=UTF-8またはWindows-31J
@@ -108,7 +109,7 @@
 		行なわれるようになります．この結果，文字化けを防げます．
 		なおJIS X 0212(補助漢字)を使用する場合は，Windows-31Jではなく
 		UTF-8を指定する必要があります．
-		
+
 	- 上記以外の場合は，my.cnfでdefault-character-setの設定を適切に
 		(cp932やutf8など．デフォルトのlatin1は不可)行なっていれば，
 		文字化けは防げます．
