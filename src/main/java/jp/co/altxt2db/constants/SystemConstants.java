@@ -7,4 +7,5 @@ public interface SystemConstants {
 	public final static String WORK_PREFIX = "_____altxt2db_";
 	public final static String KEY = "key";
 	public final static String VAL = "val";
+	public final static String MS932 = "MS932";
 }

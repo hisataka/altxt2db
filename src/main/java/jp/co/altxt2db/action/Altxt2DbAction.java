@@ -20,6 +20,8 @@ import org.seasar.framework.container.SingletonS2Container;
 
 public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 
+	public final static int ARG_LENGTH = 2;
+
 	public Altxt2DbLogic altxt2DbLogic = SingletonS2Container.getComponent(Altxt2DbLogic.class);
 	public Altxt2DbService altxt2DbService = SingletonS2Container.getComponent(Altxt2DbService.class);
 
@@ -31,7 +33,7 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 
 	@Override
 	public int setArgLength() {
-		return 2;
+		return ARG_LENGTH;
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
     	BufferedReader br = null;
 	    try {
 	    	fis = new FileInputStream(dataPath);
-	    	in = new InputStreamReader(fis,"MS932");
+	    	in = new InputStreamReader(fis,MS932);
 	    	br = new BufferedReader(in);
 
 	        String line;
