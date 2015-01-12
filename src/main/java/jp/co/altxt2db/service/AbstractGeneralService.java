@@ -104,4 +104,8 @@ public abstract class AbstractGeneralService {
     protected SqlUpdate updateBySql(String sql) {
     	return jdbcManager.updateBySql(sql);
     }
+
+    protected SqlUpdate updateBySql(String sql, Class<?> ... paramClasses) {
+    	return jdbcManager.updateBySql(sql, paramClasses);
+    }
 }

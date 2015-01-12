@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import jp.co.altxt2db.constants.SystemConstants;
 import jp.co.altxt2db.dto.AltxtMetaDto;
@@ -24,7 +25,9 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 
 	private AltxtMetaDto altxtMetaDto;
 	private String dataPath;
-	private String workTable;
+	private String merge2WorkSql;
+	private String merge2MainSql;
+	private List<String> deleteChildSqls;
 
 	@Override
 	public int setArgLength() {
@@ -40,7 +43,10 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 			e.printStackTrace();
 			return false;
 		}
-		workTable = altxt2DbService.createWork(altxtMetaDto.table);
+		//altxt2DbService.createWork(altxtMetaDto.table);
+		merge2WorkSql = altxt2DbLogic.makeMerge2WorkSql(altxtMetaDto);
+		merge2MainSql = altxt2DbLogic.makeMerge2MainSql(altxtMetaDto);
+		deleteChildSqls = altxt2DbLogic.makeDeleteChildSql(altxtMetaDto);
         return true;
 	}
 
@@ -65,39 +71,9 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	        String line;
 	        while ((line = br.readLine()) != null) {
 	        	String[] vals = CsvParser.split(line);
-	        	altxt2DbLogic.setColValue(altxtMetaDto, vals);
-	        	String sql = altxt2DbLogic.makeUpdateSql(altxtMetaDto);
-	        	//altxt2DbService.execSql(sql);
-
-	        	/*
-	        	 * アップデート用セット抽出クエリ
-	        	select
-
-	        case work.lkb when '@' then '' when '' then child.lkb else work.lkb end
-	        , case work.k_rid when '@' then '' when '' then child.k_rid else work.k_rid end
-	        , case work.k_kcd when '@' then '' when '' then child.k_kcd else work.k_kcd end
-	        , case work.k_bk when '@' then '' when '' then child.k_bk else work.k_bk end
-	        , case work.ymd when '@' then '' when '' then child.ymd else work.ymd end
-	        , case work.mkb when '@' then '' when '' then child.mkb else work.mkb end
-	        , case work.s_rid when '@' then '' when '' then child.s_rid else work.s_rid end
-	        , case work.s_kcd when '@' then '' when '' then child.s_kcd else work.s_kcd end
-	        , case work.s_bk when '@' then '' when '' then child.s_bk else work.s_bk end
-	        , case work.nd1 when '@' then '' when '' then child.nd1 else work.nd1 end
-	        , case work.nd2 when '@' then '' when '' then child.nd2 else work.nd2 end
-	        , case work.ad_cd when '@' then '' when '' then child.ad_cd else work.ad_cd end
-	        , case work.ad_nm when '@' then '' when '' then child.ad_nm else work.ad_nm end
-	    from _____ALTXT2DB_CHILD WORK inner join child
-	     on work.K_RID = child.k_rid and work.k_kcd = child.k_kcd and work.k_bk = child.k_bk and work.S_RID = child.s_rid and work.s_kcd = child.s_kcd and work.s_bk = child.s_bk;
-
-	    select * from child;
-	    select * from _____ALTXT2DB_CHILD ;
-*/
-
-	        	/* 子供削除
-	        	delete from child where
-	        	 exists ( select *  from _____ALTXT2DB_CHILD B where mkb = 'C'
-	        	        and B.K_RID = child.K_RID and B.K_KCD = child.K_KCD and B.K_BK = child.K_BK and B.S_RID = child.S_RID and B.S_KCD = child.S_KCD and B.S_BK = child.S_BK);
-*/
+	        	String[] mergeVals = altxt2DbLogic.createMergeVals(altxtMetaDto, vals);
+	        	System.out.println("h");
+	        	//altxt2DbService.execSql(merge2WorkSql, mergeVals);
 	        }
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();

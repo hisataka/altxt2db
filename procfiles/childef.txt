@@ -5,7 +5,7 @@
 		, "K_KCD"
 		, "K_BK"
 		, "S_RID"
-		, "S_SCD"
+		, "S_KCD"
 		, "S_BK"
 	]
 	, "coldef":  [
