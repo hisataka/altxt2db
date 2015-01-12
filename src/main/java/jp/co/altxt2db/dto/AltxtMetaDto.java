@@ -6,4 +6,5 @@ public class AltxtMetaDto {
 	public String table;
 	public List<String> keys;
 	public List<AltxtMetaColdefDto> coldef;
+	public List<AltxtMetaChildDto> children;
 }

@@ -4,44 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.co.altxt2db.constants.SystemConstants;
+import jp.co.altxt2db.dto.AltxtMetaChildDto;
 import jp.co.altxt2db.dto.AltxtMetaDto;
 
 
 public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
 	public List<String> makeDeleteChildSql(AltxtMetaDto altxtMetaDto) {
-		List<String> result = new ArrayList<>();
-
-
-		StringBuilder sql = new StringBuilder();
-    	/* 子供削除
-    	 * 基礎ＳＱＬ↓
-    	 *
-    	delete from child where
-    	 exists ( select *  from _____ALTXT2DB_CHILD B where mkb = 'C'
-    	        and B.K_RID = child.K_RID and B.K_KCD = child.K_KCD and B.K_BK = child.K_BK and B.S_RID = child.S_RID and B.S_KCD = child.S_KCD and B.S_BK = child.S_BK);
-
-    	        ★子供をループしながら回さないとだめ；配列で返すべきだな
-*/
-/*
-		sql.append("delete from ");
-		sql.append(altxtMetaDto.table);
-		sql.append(" where exists ( select * from ");
-		sql.append(WORK_PREFIX);
-		sql.append(altxtMetaDto.table);
-		sql.append("where MKB = 'C'");
-
-		for (int i = 1; i < altxtMetaDto.keys.size(); i ++) {
-			sql.append(" and ");
-			sql.append(altxtMetaDto.keys.get(i));
-			sql.append(" = ");
-			sql.append(altxtMetaDto.table);
-			sql.append(".");
-			sql.append(altxtMetaDto.keys.get(i));
+		if (altxtMetaDto.children == null) {
+			return new ArrayList<String>();
 		}
 
-		sql.append(");");*/
+		List<String> result = new ArrayList<>();
 
+		for (AltxtMetaChildDto child: altxtMetaDto.children) {
+			StringBuilder sql = new StringBuilder();
+			sql.append("delete from ");
+			sql.append(child.table);
+			sql.append(" where exists ( select * from ");
+			sql.append(WORK_PREFIX);
+			sql.append(altxtMetaDto.table);
+			sql.append(" where MKB = 'C'");
+
+			for (int i = 0; i < child.keymap.size(); i ++) {
+				sql.append(" and ");
+				sql.append(child.keymap.get(i).parent);
+				sql.append(" = ");
+				sql.append(child.table);
+				sql.append(".");
+				sql.append(child.keymap.get(i).child);
+			}
+
+			sql.append(");");
+
+			result.add(sql.toString());
+		}
 		return result;
 	}
 

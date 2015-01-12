@@ -72,8 +72,7 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	        while ((line = br.readLine()) != null) {
 	        	String[] vals = CsvParser.split(line);
 	        	String[] mergeVals = altxt2DbLogic.createMergeVals(altxtMetaDto, vals);
-	        	System.out.println("h");
-	        	//altxt2DbService.execSql(merge2WorkSql, mergeVals);
+	        	altxt2DbService.execSql(merge2WorkSql, mergeVals);
 	        }
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
@@ -94,6 +93,13 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	    if (!result) {
 	    	return result;
 	    }
+
+    	altxt2DbService.execSql(merge2MainSql);
+
+    	for(String deleteChildSql: deleteChildSqls) {
+    		altxt2DbService.execSql(deleteChildSql);
+    	}
+
 		return true;
 	}
 }
