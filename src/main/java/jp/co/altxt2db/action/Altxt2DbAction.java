@@ -43,7 +43,7 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 			e.printStackTrace();
 			return false;
 		}
-		//altxt2DbService.createWork(altxtMetaDto.table);
+		altxt2DbService.createWork(altxtMetaDto.table);
 		merge2WorkSql = altxt2DbLogic.makeMerge2WorkSql(altxtMetaDto);
 		merge2MainSql = altxt2DbLogic.makeMerge2MainSql(altxtMetaDto);
 		deleteChildSqls = altxt2DbLogic.makeDeleteChildSql(altxtMetaDto);
@@ -59,7 +59,6 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 	public boolean execute() {
 		boolean result = true;
 
-		// ファイル処理
     	FileInputStream fis = null;
     	InputStreamReader in = null;
     	BufferedReader br = null;
