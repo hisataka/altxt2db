@@ -48,7 +48,7 @@ public abstract class AbstractLogic implements SystemConstants {
      * @return
      */
     public List<String> createAtList(int length) {
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<String>();
 
         for (int i = 0; i < length; i ++) {
             result.add("@");
@@ -84,7 +84,7 @@ public abstract class AbstractLogic implements SystemConstants {
     public List<String> empty2At(List<String> aggregates) {
         if (aggregates == null) return null;
         
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<String>();
 
         for (String aggregate: aggregates) {
             if (aggregate == null || EMPTY.equals(aggregate)) {

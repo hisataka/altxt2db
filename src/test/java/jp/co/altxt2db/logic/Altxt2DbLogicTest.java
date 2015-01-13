@@ -84,33 +84,33 @@ public class Altxt2DbLogicTest extends S2TestCase {
         assertEquals(false, logic.isAllEmpty(null));
         
         // 要素0の場合はtrue
-        List<String> p1 = new ArrayList<>();
+        List<String> p1 = new ArrayList<String>();
         assertEquals(true, logic.isAllEmpty(p1));
         
         // 要素1で値がnullはfalse
-        List<String> p2 = new ArrayList<>();
+        List<String> p2 = new ArrayList<String>();
         p2.add(null);
         assertEquals(false, logic.isAllEmpty(p2));
         
         // 要素1で値が空ならtrue
-        List<String> p3 = new ArrayList<>();
+        List<String> p3 = new ArrayList<String>();
         p3.add("");
         assertEquals(true, logic.isAllEmpty(p3));
         
         // 要素1で値がhogeならfalse
-        List<String> p4 = new ArrayList<>();
+        List<String> p4 = new ArrayList<String>();
         p4.add("hoge");
         assertEquals(false, logic.isAllEmpty(p4));
         
         // 要素3で次の値リストなら[null,'','']false
-        List<String> p5 = new ArrayList<>();
+        List<String> p5 = new ArrayList<String>();
         p5.add(null);
         p5.add("");
         p5.add("");
         assertEquals(false, logic.isAllEmpty(p5));
         
         // 要素3で次の値リストなら['','','']true
-        List<String> p6 = new ArrayList<>();
+        List<String> p6 = new ArrayList<String>();
         p6.add("");
         p6.add("");
         p6.add("");
@@ -128,7 +128,7 @@ public class Altxt2DbLogicTest extends S2TestCase {
         // @は@
         // ＠は＠
         // ""は@
-        List<String> p = new ArrayList<>();
+        List<String> p = new ArrayList<String>();
         p.add("hoge");
         p.add("@");
         p.add("＠");

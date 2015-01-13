@@ -78,7 +78,7 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 			return new ArrayList<String>();
 		}
 
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<String>();
 
 		for (AltxtMetaChildDto child: altxtMetaDto.children) {
 			StringBuilder sql = new StringBuilder();
@@ -433,7 +433,7 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
 			// 集合項目の場合
 			if (TRUE.equals(altxtMetaDto.coldef.get(i).aggregate)) {
-				List<String> aggregates = new ArrayList<>();
+				List<String> aggregates = new ArrayList<String>();
 				for (; i < altxtMetaDto.coldef.size() && TRUE.equals(altxtMetaDto.coldef.get(i).aggregate); i ++) {
 					aggregates.add(vals[i]);
 				}

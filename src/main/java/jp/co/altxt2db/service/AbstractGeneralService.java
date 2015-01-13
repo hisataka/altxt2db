@@ -5,15 +5,12 @@ import java.util.Calendar;
 
 import javax.annotation.Resource;
 
-import jp.co.altxt2db.logic.Altxt2DbLogic;
-
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.extension.jdbc.SqlFileSelect;
 import org.seasar.extension.jdbc.SqlFileUpdate;
 import org.seasar.extension.jdbc.SqlSelect;
 import org.seasar.extension.jdbc.SqlUpdate;
 import org.seasar.extension.jdbc.parameter.Parameter;
-import org.seasar.framework.container.SingletonS2Container;
 
 /**
  * サービスの抽象クラス
