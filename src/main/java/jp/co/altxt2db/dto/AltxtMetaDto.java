@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * メタデータ格納DTO ルート
  * 
- * @author tie302852
- *
  */
 public class AltxtMetaDto {
     /** マージ対象テーブル名 */

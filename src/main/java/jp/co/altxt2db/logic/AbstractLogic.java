@@ -8,8 +8,6 @@ import jp.co.altxt2db.constants.SystemConstants;
 /**
  * 基底ロジッククラス
  * 
- * @author tie302852
- *
  */
 public abstract class AbstractLogic implements SystemConstants {
     /**
@@ -66,6 +64,8 @@ public abstract class AbstractLogic implements SystemConstants {
      * @return
      */
     public boolean isAllEmpty(List<String> aggregates) {
+        if (aggregates == null) return false;
+        
         for(String aggregate: aggregates) {
             if (aggregate == null || !EMPTY.equals(aggregate)) {
                 return false;
@@ -82,6 +82,8 @@ public abstract class AbstractLogic implements SystemConstants {
      * @return
      */
     public List<String> empty2At(List<String> aggregates) {
+        if (aggregates == null) return null;
+        
         List<String> result = new ArrayList<>();
 
         for (String aggregate: aggregates) {

@@ -1,0 +1,100 @@
+{
+	"table": "parent"
+    , "mod_colname": "MMKB"
+    , "mod_delval": "DEL"
+	, "keys": [
+		"K_RID"
+		, "K_KCD"
+		, "K_BK"
+	]
+	, "coldef":  [
+		{
+			"name": "LKB"
+		}
+		, {
+			"name": "K_RID"
+			, "aggregate": "true"
+		}
+		, {
+			"name": "K_KCD"
+			, "aggregate": "true"
+		}
+		, {
+			"name": "K_BK"
+			, "aggregate": "true"
+		}
+		, {
+			"name": "YMD"
+		}
+		, {
+			"name": "MODIFY_KB"
+		}
+		, {
+			"name": "ND1"
+		}
+		, {
+			"name": "ND2"
+		}
+		, {
+			"name": "AD_CD"
+			, "aggregate": "true"
+		}
+		, {
+			"name": "AD_NM"
+			, "aggregate": "true"
+		}
+	]
+	, "children": [
+		{
+			"table": "child"
+			"keymap": [
+				{
+					"parent": "K_RID"
+					, "child": "K_RID1"
+				}
+				, {
+					"parent": "K_KCD"
+					, "child": "K_KCD1"
+				}
+				, {
+					"parent": "K_BK"
+					, "child": "K_BK1"
+				}
+			]
+		}
+        , {
+            "table": "child2"
+            "keymap": [
+                {
+                    "parent": "K_RID"
+                    , "child": "K_RID2"
+                }
+                , {
+                    "parent": "K_KCD"
+                    , "child": "K_KCD2"
+                }
+                , {
+                    "parent": "K_BK"
+                    , "child": "K_BK2"
+                }
+            ]
+        }
+        , {
+            "table": "child3"
+            "keymap": [
+                {
+                    "parent": "K_RID"
+                    , "child": "K_RID3"
+                }
+                , {
+                    "parent": "K_KCD"
+                    , "child": "K_KCD3"
+                }
+                , {
+                    "parent": "K_BK"
+                    , "child": "K_BK3"
+                }
+            ]
+        }
+	]
+}

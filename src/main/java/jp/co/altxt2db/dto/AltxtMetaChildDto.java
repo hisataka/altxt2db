@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * メタデータ格納DTO 子テーブル
  * 
- * @author tie302852
- *
  */
 public class AltxtMetaChildDto {
     /** 子テーブル名 */

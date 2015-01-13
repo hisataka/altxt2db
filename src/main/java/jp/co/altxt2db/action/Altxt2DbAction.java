@@ -21,7 +21,6 @@ import org.seasar.framework.container.SingletonS2Container;
 /**
  * AltxtをDBへ格納するバッチ
  * 
- * @author tie302852
  *
  */
 public class Altxt2DbAction extends AbstractAction implements SystemConstants {
@@ -87,7 +86,10 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
 			return false;
 		}
 		// 一時テーブルの再生成
-		altxt2DbService.createWork(altxtMetaDto.table);
+		String dropSql = altxt2DbLogic.makeDropWorkSql(altxtMetaDto.table);
+		altxt2DbService.execSql(dropSql);
+		String createSql = altxt2DbLogic.makeCreateWorkSql(altxtMetaDto.table);
+        altxt2DbService.execSql(createSql);
 		
 		// 各種SQLをメタデータにしたがって生成
 		merge2WorkSql = altxt2DbLogic.makeMerge2WorkSql(altxtMetaDto);

@@ -5,11 +5,15 @@ import java.util.Calendar;
 
 import javax.annotation.Resource;
 
+import jp.co.altxt2db.logic.Altxt2DbLogic;
+
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.extension.jdbc.SqlFileSelect;
 import org.seasar.extension.jdbc.SqlFileUpdate;
+import org.seasar.extension.jdbc.SqlSelect;
 import org.seasar.extension.jdbc.SqlUpdate;
 import org.seasar.extension.jdbc.parameter.Parameter;
+import org.seasar.framework.container.SingletonS2Container;
 
 /**
  * サービスの抽象クラス
@@ -123,5 +127,19 @@ public abstract class AbstractGeneralService {
      */
     protected SqlUpdate updateBySql(String sql, Class<?> ... paramClasses) {
     	return jdbcManager.updateBySql(sql, paramClasses);
+    }
+    
+    /**
+     * 
+     * SQLセレクトを返す
+     * 
+     * @param baseClass
+     * @param sql
+     * @param params
+     * @return
+     */
+    protected <T> SqlSelect<T> selectBySql(Class<T> baseClass, String sql,
+        Object... params) {
+        return jdbcManager.selectBySql(baseClass, sql, params);
     }
 }

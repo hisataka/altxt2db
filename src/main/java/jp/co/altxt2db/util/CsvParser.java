@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 
 /**
  * CSVパーサー
- * 
- * @author tie302852
  *
  */
 public class CsvParser {

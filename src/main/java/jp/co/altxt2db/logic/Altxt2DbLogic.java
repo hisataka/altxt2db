@@ -10,11 +10,51 @@ import jp.co.altxt2db.dto.AltxtMetaDto;
 /**
  * AltxtをDBへ格納するバッチのロジック
  * 
- * @author tie302852
- *
  */
 public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
+    /**
+     * 
+     * 一時テーブルdrop用SQL生成
+     * 
+     * IF OBJECT_ID(N'<work_table>', N'U') IS NOT NULL drop table <work_table>
+     * 
+     * @param table
+     * @return
+     */
+    public String makeDropWorkSql(String table) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("IF OBJECT_ID(N'");
+        sql.append(WORK_PREFIX);
+        sql.append(table);
+        sql.append("', N'U') IS NOT NULL drop table ");
+        sql.append(WORK_PREFIX);
+        sql.append(table);
+        
+        return sql.toString();
+    }
+    
+    /**
+     * 
+     * 一時テーブルcreate用SQL生成
+     * 
+     * select * into <work_table> from <table> where 0 = 1;
+     * 
+     * @param table
+     * @return
+     */
+    public String makeCreateWorkSql(String table) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select * into ");
+        sql.append(WORK_PREFIX);
+        sql.append(table);
+        sql.append(" from ");
+        sql.append(table);
+        sql.append(" where 0 = 1;");
+        
+        return sql.toString();
+    }
+    
     /**
      * 
      * 子テーブル削除用SQL生成
@@ -23,8 +63,8 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
      *     where exists ( select * 
      *                    from 親一時テーブル
      *                    where 修正区分 = 'C'
-     *                          親.キー1 = 子.キー1
-     *                          AND 親.キー2 = 子.キー2
+     *                          キー1 = 子.キー1
+     *                          AND キー2 = 子.キー2
      *                              ・
      *                              ・
      *                              ・

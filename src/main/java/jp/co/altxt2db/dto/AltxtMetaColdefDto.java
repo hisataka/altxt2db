@@ -3,8 +3,6 @@ package jp.co.altxt2db.dto;
 /**
  * メタデータ格納DTO カラム定義
  * 
- * @author tie302852
- *
  */
 public class AltxtMetaColdefDto {
     /** カラム名 */

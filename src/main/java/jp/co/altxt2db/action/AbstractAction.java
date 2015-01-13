@@ -16,8 +16,6 @@ import org.seasar.framework.container.SingletonS2Container;
  * executeメソッドのみトランザクション制御を行う
  * init,finiにてトランザクション制御が必要となる操作はしない前提
  * 
- * @author tie302852
- *
  */
 public abstract class AbstractAction {
 

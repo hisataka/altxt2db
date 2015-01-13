@@ -3,8 +3,6 @@ package jp.co.altxt2db.constants;
 /**
  * システム定数定義
  * 
- * @author tie302852
- *
  */
 public interface SystemConstants {
     /** バッチ成功値 */

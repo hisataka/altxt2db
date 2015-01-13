@@ -2,7 +2,6 @@ package jp.co.altxt2db.dto;
 
 /**
  * メタデータ格納DTO　親子のキーマップ
- * @author tie302852
  *
  */
 public class AltxtMetaKeymapDto {

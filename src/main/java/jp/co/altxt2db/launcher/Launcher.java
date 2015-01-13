@@ -13,8 +13,6 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
  * 第一引数に実行用アクションクラスパスを指定して起動する。
  * 正常終了時はexitコード0を返し、失敗時は1を返す
  * 
- * @author tie302852
- *
  */
 public class Launcher implements SystemConstants {
 
