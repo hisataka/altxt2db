@@ -12,7 +12,8 @@ import org.seasar.extension.jdbc.SqlUpdate;
 import org.seasar.extension.jdbc.parameter.Parameter;
 
 /**
- * サービスの抽象クラスです。
+ * サービスの抽象クラス
+ * エンティティに依存しないクエリ発行用
  *
  */
 public abstract class AbstractGeneralService {
@@ -101,10 +102,25 @@ public abstract class AbstractGeneralService {
         return jdbcManager.updateBySqlFile(sqlFilePathPrefix + path, parameter);
     }
 
+    /**
+     * 
+     * SQL更新を返す（パラメータ無し）
+     * 
+     * @param sql
+     * @return
+     */
     protected SqlUpdate updateBySql(String sql) {
     	return jdbcManager.updateBySql(sql);
     }
 
+    /**
+     * 
+     * SQL更新を返す（パラメータ有り）
+     * 
+     * @param sql
+     * @param paramClasses
+     * @return
+     */
     protected SqlUpdate updateBySql(String sql, Class<?> ... paramClasses) {
     	return jdbcManager.updateBySql(sql, paramClasses);
     }

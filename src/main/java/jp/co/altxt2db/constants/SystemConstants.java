@@ -1,14 +1,24 @@
 package jp.co.altxt2db.constants;
 
+/**
+ * システム定数定義
+ * 
+ * @author tie302852
+ *
+ */
 public interface SystemConstants {
+    /** バッチ成功値 */
 	public final static int SUCCESS = 0;
+	/** バッチ失敗値 */
 	public final static int ERROR = 1;
+	/** アクション実行メソッド名 */
 	public final static String ACTINO_EXECUTE = "executeCore";
+	/** 一時テーブルプレフィックス */
 	public final static String WORK_PREFIX = "_____altxt2db_";
-	public final static String KEY = "key";
-	public final static String VAL = "val";
+	/** MS932文字コード */
 	public final static String MS932 = "MS932";
-	public final static String MODIFY_COLNAME = "MODIFY_KB";
-	public final static String MODIFY_DELVAL = "C";
-	public final static String MODIFY_EQ_DEL = "MODIFY_KB = 'C'";
+	/** TRUE文字列 */
+	public final static String TRUE = "true";
+	/** 空値 */
+	public final static String EMPTY = "";
 }

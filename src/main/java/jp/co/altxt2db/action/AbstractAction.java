@@ -10,17 +10,57 @@ import jp.co.altxt2db.dto.EnvironmentDto;
 
 import org.seasar.framework.container.SingletonS2Container;
 
+/**
+ * 基底アクションクラス
+ * 
+ * executeメソッドのみトランザクション制御を行う
+ * init,finiにてトランザクション制御が必要となる操作はしない前提
+ * 
+ * @author tie302852
+ *
+ */
 public abstract class AbstractAction {
 
+    /**
+     * 初期処理メソッド
+     * @return
+     */
 	public abstract boolean init();
+	
+	/**
+	 * 終了処理メソッド
+	 * @return
+	 */
 	public abstract boolean fini();
+	
+	/**
+	 * メイン処理メソッド
+	 * @return
+	 */
 	public abstract boolean execute();
+	
+	/**
+	 * 個別アクションとして必要となる引数の数を設定
+	 * @return
+	 */
 	public abstract int setArgLength();
 
+	/**
+	 * 個別アクションとして利用する引数の配列
+	 */
 	public String[] args;
 
+	/**
+	 * ユーザトランザクション
+	 */
     protected UserTransaction userTransaction = SingletonS2Container.getComponent(UserTransaction.class);
 
+    /**
+     * アクション実行コア処理
+     * 
+     * @param env
+     * @return
+     */
    @TransactionAttribute(TransactionAttributeType.NEVER)
     public boolean executeCore(EnvironmentDto env) {
 		boolean result = true;

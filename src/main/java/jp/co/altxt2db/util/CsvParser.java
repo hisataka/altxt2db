@@ -3,6 +3,12 @@ package jp.co.altxt2db.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * CSVパーサー
+ * 
+ * @author tie302852
+ *
+ */
 public class CsvParser {
     /** 後ろに偶数個の「"」が現れる「,」にマッチする正規表現 */
     static final String REGEX_CSV_COMMA = ",(?=(([^\"]*\"){2})*[^\"]*$)";

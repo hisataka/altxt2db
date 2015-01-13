@@ -8,8 +8,21 @@ import jp.co.altxt2db.dto.EnvironmentDto;
 
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
+/**
+ * バッチ起動ランチャー
+ * 第一引数に実行用アクションクラスパスを指定して起動する。
+ * 正常終了時はexitコード0を返し、失敗時は1を返す
+ * 
+ * @author tie302852
+ *
+ */
 public class Launcher implements SystemConstants {
 
+    /**
+     * メインメソッド
+     * 
+     * @param args
+     */
 	public static void main(String[] args) {
 		EnvironmentDto env = new EnvironmentDto();
 		if (args.length < 1) {

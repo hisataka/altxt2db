@@ -1,5 +1,7 @@
 {
 	"table": "child"
+	, "mod_colname": "MODIFY_KB"
+	, "mod_delval": "C"
 	, "keys": [
 		"K_RID"
 		, "K_KCD"

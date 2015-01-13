@@ -7,9 +7,32 @@ import jp.co.altxt2db.constants.SystemConstants;
 import jp.co.altxt2db.dto.AltxtMetaChildDto;
 import jp.co.altxt2db.dto.AltxtMetaDto;
 
-
+/**
+ * AltxtをDBへ格納するバッチのロジック
+ * 
+ * @author tie302852
+ *
+ */
 public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
+    /**
+     * 
+     * 子テーブル削除用SQL生成
+     * 
+     * update 子 set 修正区分 = 'C' 
+     *     where exists ( select * 
+     *                    from 親一時テーブル
+     *                    where 修正区分 = 'C'
+     *                          親.キー1 = 子.キー1
+     *                          AND 親.キー2 = 子.キー2
+     *                              ・
+     *                              ・
+     *                              ・
+     *           );
+     * 
+     * @param altxtMetaDto
+     * @return
+     */
 	public List<String> makeDeleteChildSql(AltxtMetaDto altxtMetaDto) {
 		if (altxtMetaDto.children == null) {
 			return new ArrayList<String>();
@@ -22,14 +45,17 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 			sql.append("update ");
 			sql.append(child.table);
 			sql.append(" set ");
-			sql.append(MODIFY_COLNAME);
+			sql.append(altxtMetaDto.mod_colname);
 			sql.append(" = '");
-			sql.append(MODIFY_DELVAL);
+			sql.append(altxtMetaDto.mod_delval);
 			sql.append("' where exists ( select * from ");
 			sql.append(WORK_PREFIX);
 			sql.append(altxtMetaDto.table);
 			sql.append(" where ");
-			sql.append(MODIFY_EQ_DEL);
+			sql.append(altxtMetaDto.mod_colname);
+			sql.append(" = '");
+			sql.append(altxtMetaDto.mod_delval);
+			sql.append("'");
 
 			for (int i = 0; i < child.keymap.size(); i ++) {
 				sql.append(" and ");
@@ -47,6 +73,53 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		return result;
 	}
 
+	/**
+	 * 
+	 *  本テーブルマージ用SQL生成
+	 *  
+	 *  merge into 本テーブル as A
+	 *     using (select isnull(case 一時テーブル.カラム1 when '@' then '' when '' then 本テーブル.カラム1 else 一時テーブル.カラム1 end, '') as カラム1
+	 *                   , isnull(case 一時テーブル.カラム2 when '@' then '' when '' then 本テーブル.カラム2 else 一時テーブル.カラム2 end, '') as カラム2
+	 *                      ・
+	 *                      ・
+	 *                      ・
+	 *            from 一時テーブル
+	 *                left outer join 本テーブル
+	 *                    on 一時テーブル.キー1 = 本テーブル.キー1
+	 *                        and 一時テーブル.キー2 = 本テーブル.キー2
+	 *                            ・
+	 *                            ・
+	 *                            ・
+	 *     ) as B
+	 *     on (A.キー1 = B.キー1
+	 *         and A.キー2 = B.キー2
+	 *             ・
+	 *             ・
+	 *             ・
+	 *     )
+	 *     when matched then update set
+	 *         カラム1 = B.カラム1
+	 *         , カラム2 = B.カラム2
+	 *             ・
+	 *             ・
+	 *             ・
+	 *     when not matched then insert (
+	 *         カラム1
+	 *         , カラム2
+	 *             ・
+	 *             ・
+	 *             ・
+	 *     ) values (
+	 *         B.カラム1
+	 *         , B.カラム2
+	 *             ・
+	 *             ・
+	 *             ・
+	 *     );
+	 *  
+	 * @param altxtMetaDto
+	 * @return
+	 */
 	public String makeMerge2MainSql(AltxtMetaDto altxtMetaDto) {
 		StringBuilder sql = new StringBuilder();
 
@@ -160,6 +233,58 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		return sql.toString();
 	}
 
+	/**
+	 * 
+     *  一時テーブルマージ用SQL生成
+     *  
+     *  merge into 一時テーブル as A
+     *     using (select isnull(case txt.カラム1 when '' then work.カラム1 else txt.カラム1 end, '') as カラム1
+     *                   , isnull(case txt.カラム2 when '' then work.カラム2 else txt.カラム2 end, '') as カラム2
+     *                      ・
+     *                      ・
+     *                      ・
+     *            from (select ? as カラム1
+     *                         , ? as カラム2
+     *                             ・
+     *                             ・
+     *                             ・
+     *                 ) as txt
+     *                     left outer join 一時テーブル as work
+     *                         on txt.キー1 = work.キー1
+     *                         and txt.キー2 = work.キー2
+     *                             ・
+     *                             ・
+     *                             ・
+     *     ) as B
+     *     on (A.キー1 = B.キー1
+     *         and A.キー2 = B.キー2
+     *             ・
+     *             ・
+     *             ・
+     *     )
+     *     when matched then update set
+     *         カラム1 = B.カラム1
+     *         , カラム2 = B.カラム2
+     *             ・
+     *             ・
+     *             ・
+     *     when not matched then insert (
+     *         カラム1
+     *         , カラム2
+     *             ・
+     *             ・
+     *             ・
+     *     ) values (
+     *         B.カラム1
+     *         , B.カラム2
+     *             ・
+     *             ・
+     *             ・
+     *     );
+     *     
+	 * @param altxtMetaDto
+	 * @return
+	 */
 	public String makeMerge2WorkSql(AltxtMetaDto altxtMetaDto) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("merge into ");
@@ -252,6 +377,14 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		return sql.toString();
 	}
 
+	/**
+	 * 
+	 * 集合項目ルール　→　一般項目ルールへのマージ及び、＠→@置換などを行う
+	 * 
+	 * @param altxtMetaDto
+	 * @param vals
+	 * @return
+	 */
 	public String[] createMergeVals(AltxtMetaDto altxtMetaDto, String[] vals) {
 		String[] result = new String[vals.length];
 		int resultIdx = 0;
@@ -259,16 +392,16 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		for (int i = 0; i < altxtMetaDto.coldef.size(); i ++) {
 
 			// 集合項目の場合
-			if ("true".equals(altxtMetaDto.coldef.get(i).aggregate)) {
+			if (TRUE.equals(altxtMetaDto.coldef.get(i).aggregate)) {
 				List<String> aggregates = new ArrayList<>();
-				for (; i < altxtMetaDto.coldef.size() && "true".equals(altxtMetaDto.coldef.get(i).aggregate); i ++) {
+				for (; i < altxtMetaDto.coldef.size() && TRUE.equals(altxtMetaDto.coldef.get(i).aggregate); i ++) {
 					aggregates.add(vals[i]);
 				}
 				// 集合項目に対する処理
 				// 先頭が@であるか
 				if (isAt(aggregates.get(0))) {
-					// 全項目を@に置換
-					aggregates = replaceAllAt(aggregates.size());
+					// 全項目を@で生成しなおす
+					aggregates = createAtList(aggregates.size());
 				} else {
 					// すべて空であるか
 					if (isAllEmpty(aggregates)) {
@@ -288,56 +421,6 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 				result[resultIdx ++] = mAt2sAt(vals[i]);
 			}
 		}
-
-
 		return result;
 	}
-
-	public String mAt2sAt(String str) {
-		if ("＠".equals(str)) {
-			return "@";
-		}  else {
-			return str;
-		}
-	}
-
-	public boolean isAt(String str) {
-		if ("＠".equals(str) || "@".equals(str)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public List<String> replaceAllAt(int length) {
-		List<String> result = new ArrayList<>();
-
-		for (int i = 0; i < length; i ++) {
-			result.add("@");
-		}
-		return result;
-	}
-
-	public boolean isAllEmpty(List<String> aggregates) {
-		for(String aggregate: aggregates) {
-			if (aggregate == null || !"".equals(aggregate)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public List<String> empty2At(List<String> aggregates) {
-		List<String> result = new ArrayList<>();
-
-		for (String aggregate: aggregates) {
-			if (aggregate == null || "".equals(aggregate)) {
-				result.add("@");
-			} else {
-				result.add(aggregate);
-			}
-		}
-		return result;
-	}
-
 }
