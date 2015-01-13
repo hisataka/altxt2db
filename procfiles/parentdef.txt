@@ -25,7 +25,7 @@
 			"name": "YMD"
 		}
 		, {
-			"name": "MKB"
+			"name": "MODIFY_KB"
 		}
 		, {
 			"name": "ND1"

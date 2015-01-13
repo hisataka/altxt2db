@@ -5,7 +5,7 @@
 		, "K_KCD"
 		, "K_BK"
 		, "S_RID"
-		, "S_KCD"
+		, "S_SCD"
 		, "S_BK"
 	]
 	, "coldef":  [
@@ -28,14 +28,14 @@
 			"name": "YMD"
 		}
 		, {
-			"name": "MKB"
+			"name": "MODIFY_KB"
 		}
 		, {
 			"name": "S_RID"
 			, "aggregate": "true"
 		}
 		, {
-			"name": "S_KCD"
+			"name": "S_SCD"
 			, "aggregate": "true"
 		}
 		, {

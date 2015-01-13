@@ -19,12 +19,17 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
 		for (AltxtMetaChildDto child: altxtMetaDto.children) {
 			StringBuilder sql = new StringBuilder();
-			sql.append("delete from ");
+			sql.append("update ");
 			sql.append(child.table);
-			sql.append(" where exists ( select * from ");
+			sql.append(" set ");
+			sql.append(MODIFY_COLNAME);
+			sql.append(" = '");
+			sql.append(MODIFY_DELVAL);
+			sql.append("' where exists ( select * from ");
 			sql.append(WORK_PREFIX);
 			sql.append(altxtMetaDto.table);
-			sql.append(" where MKB = 'C'");
+			sql.append(" where ");
+			sql.append(MODIFY_EQ_DEL);
 
 			for (int i = 0; i < child.keymap.size(); i ++) {
 				sql.append(" and ");
@@ -47,7 +52,7 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 
 		sql.append("merge into ");
 		sql.append(altxtMetaDto.table);
-		sql.append(" as A using (select case ");
+		sql.append(" as A using (select isnull(case ");
 		sql.append(WORK_PREFIX);
 		sql.append(altxtMetaDto.table);
 		sql.append(".");
@@ -61,11 +66,11 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		sql.append(altxtMetaDto.table);
 		sql.append(".");
 		sql.append(altxtMetaDto.coldef.get(0).name);
-		sql.append(" end as ");
+		sql.append(" end, '') as ");
 		sql.append(altxtMetaDto.coldef.get(0).name);
 
 		for(int i = 1; i < altxtMetaDto.coldef.size(); i ++) {
-			sql.append(" , case ");
+			sql.append(" , isnull(case ");
 			sql.append(WORK_PREFIX);
 			sql.append(altxtMetaDto.table);
 			sql.append(".");
@@ -79,14 +84,14 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 			sql.append(altxtMetaDto.table);
 			sql.append(".");
 			sql.append(altxtMetaDto.coldef.get(i).name);
-			sql.append(" end as ");
+			sql.append(" end, '') as ");
 			sql.append(altxtMetaDto.coldef.get(i).name);
 		}
 
 		sql.append(" from ");
 		sql.append(WORK_PREFIX);
 		sql.append(altxtMetaDto.table);
-		sql.append(" inner join ");
+		sql.append(" left outer join ");
 		sql.append(altxtMetaDto.table);
 		sql.append(" on ");
 		sql.append(WORK_PREFIX);
@@ -134,7 +139,7 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 			sql.append(altxtMetaDto.coldef.get(i).name);
 		}
 
-		sql.append(" when not mached then insert (");
+		sql.append(" when not matched then insert (");
 		sql.append(altxtMetaDto.coldef.get(0).name);
 
 		for (int i = 1; i < altxtMetaDto.coldef.size();  i ++) {
@@ -160,14 +165,49 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		sql.append("merge into ");
 		sql.append(WORK_PREFIX);
 		sql.append(altxtMetaDto.table);
-		sql.append(" as A using (select ? as ");
+		sql.append(" as A using (select isnull(case txt.");
+		sql.append(altxtMetaDto.coldef.get(0).name);
+		sql.append(" when '' then work.");
+		sql.append(altxtMetaDto.coldef.get(0).name);
+		sql.append(" else txt.");
+		sql.append(altxtMetaDto.coldef.get(0).name);
+		sql.append(" end, '') as ");
+		sql.append(altxtMetaDto.coldef.get(0).name);
+		
+		for (int i = 1; i < altxtMetaDto.coldef.size(); i ++) {
+		    sql.append(" , isnull(case txt.");
+	        sql.append(altxtMetaDto.coldef.get(i).name);
+	        sql.append(" when '' then work.");
+	        sql.append(altxtMetaDto.coldef.get(i).name);
+	        sql.append(" else txt.");
+	        sql.append(altxtMetaDto.coldef.get(i).name);
+	        sql.append(" end, '') as ");
+	        sql.append(altxtMetaDto.coldef.get(i).name);
+		}
+		
+		sql.append(" from (select ? as ");
 		sql.append(altxtMetaDto.coldef.get(0).name);
 
 		for(int i = 1; i < altxtMetaDto.coldef.size(); i ++) {
 			sql.append(" , ? as ");
 			sql.append(altxtMetaDto.coldef.get(i).name);
 		}
-
+		
+		sql.append(" ) as txt left outer join ");
+        sql.append(WORK_PREFIX);
+        sql.append(altxtMetaDto.table);
+        sql.append(" as work on txt.");
+        sql.append(altxtMetaDto.keys.get(0));
+        sql.append(" = work.");
+        sql.append(altxtMetaDto.keys.get(0));
+        
+        for (int i = 1; i < altxtMetaDto.keys.size(); i ++) {
+            sql.append(" and txt.");
+            sql.append(altxtMetaDto.keys.get(i));
+            sql.append(" = work.");
+            sql.append(altxtMetaDto.keys.get(i));
+        }
+        
 		sql.append(" ) as B on (A.");
 		sql.append(altxtMetaDto.keys.get(0));
 		sql.append(" = B.");
@@ -192,7 +232,7 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 			sql.append(altxtMetaDto.coldef.get(i).name);
 		}
 
-		sql.append(" when not mached then insert (");
+		sql.append(" when not matched then insert (");
 		sql.append(altxtMetaDto.coldef.get(0).name);
 
 		for (int i = 1; i < altxtMetaDto.coldef.size();  i ++) {

@@ -8,4 +8,7 @@ public interface SystemConstants {
 	public final static String KEY = "key";
 	public final static String VAL = "val";
 	public final static String MS932 = "MS932";
+	public final static String MODIFY_COLNAME = "MODIFY_KB";
+	public final static String MODIFY_DELVAL = "C";
+	public final static String MODIFY_EQ_DEL = "MODIFY_KB = 'C'";
 }

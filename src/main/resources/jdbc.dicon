@@ -23,6 +23,7 @@
 
 	<!-- for H2 -->
 	<!-- 			"jdbc:h2:tcp://localhost:9092/demo" -->
+    <!--
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
@@ -37,6 +38,7 @@
 			@org.seasar.framework.util.DriverManagerUtil@deregisterAllDrivers()
 		</destroyMethod>
 	</component>
+	-->
 
 	<!-- for Oracle -->
 	<!--
@@ -127,19 +129,17 @@
 	-->
 
 	<!-- for SQLServer -->
-	<!--
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"net.sourceforge.jtds.jdbc.Driver"
         </property>
         <property name="URL">
-            "jdbc:jtds:sqlserver://localhost/TEST;instance=SQLEXPRESS"
+            "jdbc:jtds:sqlserver://localhost/db;instance=SQLEXPRESS"
         </property>
-        <property name="user">"xxxx"</property>
-        <property name="password">"xxxx"</property>
+        <property name="user">"sa"</property>
+        <property name="password">""</property>
     </component>
-	-->
 
 	<component name="connectionPool"
 		class="org.seasar.extension.dbcp.impl.ConnectionPoolImpl">

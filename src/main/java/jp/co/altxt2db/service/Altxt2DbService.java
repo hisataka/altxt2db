@@ -5,12 +5,16 @@ import jp.co.altxt2db.constants.SystemConstants;
 public class Altxt2DbService extends AbstractGeneralService implements SystemConstants {
 	public void createWork(String from) {
 
+        // IF OBJECT_ID(N'<table>', N'U') IS NOT NULL drop table <table>
 		StringBuilder dropSql = new StringBuilder();
-		dropSql.append("drop table if exists ");
+		dropSql.append("IF OBJECT_ID(N'");
 		dropSql.append(WORK_PREFIX);
 		dropSql.append(from);
-		dropSql.append(";");
+		dropSql.append("', N'U') IS NOT NULL drop table ");
+        dropSql.append(WORK_PREFIX);
+        dropSql.append(from);
 
+        // select * into <table> from parent where 0 = 1;
 		StringBuilder createSql = new StringBuilder();
 		createSql.append("select * into ");
 		createSql.append(WORK_PREFIX);

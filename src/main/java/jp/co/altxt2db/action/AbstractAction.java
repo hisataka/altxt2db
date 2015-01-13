@@ -26,7 +26,6 @@ public abstract class AbstractAction {
 		boolean result = true;
 
 		try {
-			userTransaction.begin();
 
 			if (env.args.length - 1 != setArgLength()) {
 				System.out.println("usage: Launcher " + env.args[0] + " <metafile-path> <datafile-path>");
@@ -44,17 +43,18 @@ public abstract class AbstractAction {
 				throw new Exception("init error");
 			}
 
+            userTransaction.begin();
 			result = execute();
 			if (!result) {
 				throw new Exception("execute error");
 			}
+            userTransaction.commit();
 
 			result = fini();
 			if (!result) {
 				throw new Exception("fini error");
 			}
 
-			userTransaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = false;
