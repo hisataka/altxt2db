@@ -11,6 +11,12 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+                <includes>
+                    <include>*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/jdbc.dicon</exclude>
+                </excludes>
 			</resource>
 		</resources>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
@@ -42,6 +48,9 @@
                         <manifest>
                             <mainClass>jp.co.altxt2db.launcher.Launcher</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <Class-Path>.</Class-Path>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
