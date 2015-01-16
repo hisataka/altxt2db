@@ -432,31 +432,33 @@ public class Altxt2DbLogic extends AbstractLogic implements SystemConstants  {
 		for (int i = 0; i < altxtMetaDto.coldef.size(); i ++) {
 
 			// 集合項目の場合
-			if (TRUE.equals(altxtMetaDto.coldef.get(i).aggregate)) {
-				List<String> aggregates = new ArrayList<String>();
-				for (; i < altxtMetaDto.coldef.size() && TRUE.equals(altxtMetaDto.coldef.get(i).aggregate); i ++) {
-					aggregates.add(vals[i]);
-				}
-				// 集合項目に対する処理
-				// 先頭が@であるか
-				if (isAt(aggregates.get(0))) {
-					// 全項目を@で生成しなおす
-					aggregates = createAtList(aggregates.size());
-				} else {
-					// すべて空であるか
-					if (isAllEmpty(aggregates)) {
-						// 置換なし
-					} else {
-						// 空項目を@に置換
-						aggregates = empty2At(aggregates);
-					}
-				}
-				for(String aggregate: aggregates) {
-					result[resultIdx ++] = aggregate;
-				}
-			}
-
-			if (i < altxtMetaDto.coldef.size()) {
+		    if (altxtMetaDto.coldef.get(i).aggregate != null) {
+                List<String> aggregates = new ArrayList<String>();
+                String currAggregate = altxtMetaDto.coldef.get(i).aggregate; 
+                for (; i < altxtMetaDto.coldef.size() && currAggregate.equals(altxtMetaDto.coldef.get(i).aggregate); i ++) {
+                    aggregates.add(vals[i]);
+                }
+                // 戻す
+                i --;
+                
+                // 集合項目に対する処理
+                // 先頭が@であるか
+                if (isAt(aggregates.get(0))) {
+                    // 全項目を@で生成しなおす
+                    aggregates = createAtList(aggregates.size());
+                } else {
+                    // すべて空であるか
+                    if (isAllEmpty(aggregates)) {
+                        // 置換なし
+                    } else {
+                        // 空項目を@に置換
+                        aggregates = empty2At(aggregates);
+                    }
+                }
+                for(String aggregate: aggregates) {
+                    result[resultIdx ++] = aggregate;
+                }
+		    } else {
 				// 通常項目の処理
 				result[resultIdx ++] = mAt2sAt(vals[i]);
 			}

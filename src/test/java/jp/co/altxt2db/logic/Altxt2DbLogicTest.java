@@ -402,6 +402,40 @@ public class Altxt2DbLogicTest extends S2TestCase {
         
     }
     
+
+    
+    public void testCreateMergeVals2() {
+        AltxtMetaDto altxtMetaDto = null;
+        try {
+            altxtMetaDto = JSON.decode(new FileReader("C:\\tisdev\\workspace\\altxt2db\\procfiles\\testaggParentdef.txt"), AltxtMetaDto.class);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        
+        // 全項目そのまま
+        String[] vals1 =  {"lkb", "krid", "kkcd", "kbk", "ymd", "mod", "nd1", "nd2", "adcd", "adnm"};
+        String[] result1 = logic.createMergeVals(altxtMetaDto, vals1);
+        for (int i = 0; i < vals1.length; i ++) {
+            assertEquals(vals1[i], result1[i]);
+        }
+        
+        // 連続した集団項目の処理1
+        String[] vals2 = {"lkb", "krid", "", "kbk", "", "mod", "nd1", "nd2", "adcd", "adnm"};
+        String[] result2 = logic.createMergeVals(altxtMetaDto, vals2);
+        String[] assert2 = {"lkb", "krid", "@", "kbk", "@", "mod", "nd1", "nd2", "adcd", "adnm"};
+        for (int i = 0; i < assert2.length; i ++) {
+            assertEquals(assert2[i], result2[i]);
+        }
+
+        // 連続した集団項目の処理2
+        String[] vals3 = {"lkb", "@", "", "", "", "", "nd1", "nd2", "adcd", "adnm"};
+        String[] result3 = logic.createMergeVals(altxtMetaDto, vals3);
+        String[] assert3 = {"lkb", "@", "@", "@", "", "", "nd1", "nd2", "adcd", "adnm"};
+        for (int i = 0; i < assert3.length; i ++) {
+            assertEquals(assert3[i], result3[i]);
+        }
+    }
+    
     /**
      * 
      * 一時テーブルdrop用SQL生成

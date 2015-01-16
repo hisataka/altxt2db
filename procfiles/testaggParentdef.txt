@@ -1,0 +1,68 @@
+{
+	"table": "parent"
+    , "mod_colname": "MODIFY_KB"
+    , "mod_delval": "C"
+	, "keys": [
+		"K_RID"
+		, "K_KCD"
+		, "K_BK"
+	]
+	, "coldef":  [
+		{
+			"name": "LKB"
+		}
+		, {
+			"name": "K_RID"
+			, "aggregate": "_1"
+		}
+		, {
+			"name": "K_KCD"
+			, "aggregate": "_1"
+		}
+		, {
+			"name": "K_BK"
+			, "aggregate": "_1"
+		}
+		, {
+			"name": "YMD"
+            , "aggregate": "_2"
+		}
+		, {
+			"name": "MODIFY_KB"
+            , "aggregate": "_2"
+		}
+		, {
+			"name": "ND1"
+		}
+		, {
+			"name": "ND2"
+		}
+		, {
+			"name": "AD_CD"
+			, "aggregate": "_3"
+		}
+		, {
+			"name": "AD_NM"
+			, "aggregate": "_3"
+		}
+	]
+	, "children": [
+		{
+			"table": "child"
+			"keymap": [
+				{
+					"parent": "K_RID"
+					, "child": "K_RID"
+				}
+				, {
+					"parent": "K_KCD"
+					, "child": "K_KCD"
+				}
+				, {
+					"parent": "K_BK"
+					, "child": "K_BK"
+				}
+			]
+		}
+	]
+}
