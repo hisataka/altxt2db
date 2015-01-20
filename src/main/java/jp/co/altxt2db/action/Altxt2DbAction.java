@@ -157,8 +157,13 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
     	altxt2DbService.execSql(merge2MainSql);
 
     	// ③子テーブルに対する削除区分更新処理
-    	for(String deleteChildSql: deleteChildSqls) {
+    	for (String deleteChildSql: deleteChildSqls) {
     		altxt2DbService.execSql(deleteChildSql);
+    	}
+    	
+    	// ④追加で流したいクエリが設定されていれば実行
+    	if (altxtMetaDto.postQuery != null) {
+            altxt2DbService.execSql(altxtMetaDto.postQuery);
     	}
 
 		return true;

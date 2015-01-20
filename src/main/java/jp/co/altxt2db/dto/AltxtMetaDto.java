@@ -19,4 +19,6 @@ public class AltxtMetaDto {
 	public List<AltxtMetaColdefDto> coldef;
 	/** マージ対象テーブルの子テーブル群 */
 	public List<AltxtMetaChildDto> children;
+	/** 最終で追加で実行したいクエリ */
+	public String postQuery;
 }

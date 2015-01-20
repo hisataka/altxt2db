@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: tie302852
+Build-Jdk: 1.7.0_45
+Main-Class: jp.co.altxt2db.launcher.Launcher
+Class-Path: .
+
