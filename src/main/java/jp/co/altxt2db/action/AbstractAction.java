@@ -47,6 +47,12 @@ public abstract class AbstractAction {
 	 * 個別アクションとして利用する引数の配列
 	 */
 	public String[] args;
+	
+	/**
+	 * 個別アクションの引数の使い方メッセージ
+	 * @return
+	 */
+	public abstract String usageArgs();
 
 	/**
 	 * ユーザトランザクション
@@ -66,7 +72,7 @@ public abstract class AbstractAction {
 		try {
 
 			if (env.args.length - 1 != setArgLength()) {
-				System.out.println("usage: Launcher " + env.args[0] + " <metafile-path> <datafile-path>");
+				System.out.println("usage: Launcher " + env.args[0] + " " + usageArgs());
 				throw new Exception("args error");
 			}
 

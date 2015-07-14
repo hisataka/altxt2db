@@ -76,6 +76,14 @@ public class Altxt2DbAction extends AbstractAction implements SystemConstants {
     /**
      * ${inheritDoc}
      */
+    @Override
+    public String usageArgs() {
+        return "<metafile-path> <datafile-path>";
+    }
+
+    /**
+     * ${inheritDoc}
+     */
 	@Override
 	public boolean init() {
         dataPath = args[1];
